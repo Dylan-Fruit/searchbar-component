@@ -1,0 +1,32 @@
+.header {
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 16px;
+    img {
+      height: 28px;
+      width: 82px;
+    }
+    button {
+      background: 0;
+      border: 0;
+      color: inherit;
+      height: 24px;
+      padding: 0;
+      width: 24px;
+      svg {
+        path {
+          fill: #fff;
+        }
+      }
+    }
+    ul {
+      display: none;
+    }
+  }
+}

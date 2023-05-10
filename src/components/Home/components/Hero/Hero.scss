@@ -1,0 +1,19 @@
+.Hero {
+  background: no-repeat center 27% / cover
+    url("../../../../assets/hero-banner.jpg");
+  height: 256px;
+  padding: 80px 0 0 16px;
+  h1 {
+    color: #fff;
+    margin: 0;
+    font-size: 18px;
+    line-height: 24px;
+  }
+  h2 {
+    color: #fff;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28px;
+  }
+}
