@@ -1,0 +1,28 @@
+.Search {
+  position: absolute;
+  width: 100%;
+  margin: 0 auto;
+  top: 205px;
+  padding: 0 16px;
+  min-width: 280px;
+  .searchContent {
+    pointer-events: all;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(19, 41, 104, 0.1);
+    border-radius: 8px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    .topFormContent {
+      padding: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .searchForm {
+      background-color: #fff;
+      max-width: 1136px;
+      padding: 8px;
+      border-radius: 8px;
+    }
+  }
+}

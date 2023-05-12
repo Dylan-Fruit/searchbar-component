@@ -1,0 +1,30 @@
+.Passengers {
+  display: flex;
+  align-items: center;
+  margin: 4px 8px;
+  .passengerButton,
+  .reductionButton {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+  }
+  .passengerSVG,
+  .reductionSVG {
+    height: 24px;
+    width: 24px;
+    display: flex;
+    color: #a1a9c3;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    transition: 0.15s ease-in-out;
+  }
+  p {
+    height: 24px;
+    margin: 0 0 0 8px;
+    font-size: 14px;
+    line-height: 24px;
+    color: #132968;
+    font-weight: 500;
+  }
+}
