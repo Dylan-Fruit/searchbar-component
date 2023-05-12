@@ -1,6 +1,42 @@
+@media (min-width: 1200px) {
+  .modal {
+    display: none;
+  }
+}
+
 .DepartureInputs {
+  .departureCity {
+    .departureSVG {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 24px;
+      height: 24px;
+      svg {
+        path {
+          fill: #a1a9c3;
+        }
+      }
+    }
+  }
+  .arrivalCity {
+    .arrivalSVG {
+      position: absolute;
+      top: 16px;
+      left: 17px;
+      width: 24px;
+      height: 24px;
+      svg {
+        path {
+          fill: #a1a9c3;
+        }
+      }
+    }
+  }
+
   .departureCity,
   .arrivalCity {
+    position: relative;
     input {
       font-weight: 400;
       font-style: normal;
@@ -8,7 +44,7 @@
       box-sizing: border-box;
       height: 48px;
       width: 96%;
-      padding: 0 12px;
+      padding: 0 12px 0 40px;
       border: 1px solid #f1f2f6;
       border-radius: 8px;
       font-size: 16px;
@@ -22,9 +58,75 @@
       color: #132968;
       transition: border 0.15s;
       margin: 4px 8px;
+      &::placeholder {
+        text-transform: capitalize;
+        color: #a1a9c3;
+        opacity: 1;
+      }
+      &:hover {
+        border: 1px solid #a1a9c3;
+        outline: 0;
+      }
     }
   }
   .Popular {
     display: none;
+  }
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    z-index: 999;
+    &Top {
+      width: 100%;
+      height: 96px;
+      box-sizing: border-box;
+      margin: 0;
+      background-color: #fff;
+      color: #666;
+      text-decoration: none;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 8px 0 rgba(51, 51, 51, 0.1);
+      &Content {
+        display: flex;
+        width: 100%;
+        height: 48px;
+        .modalSVG {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          svg {
+            width: 56px;
+            path {
+              fill: #717fa4;
+            }
+          }
+        }
+        input {
+          width: 100%;
+          border: none;
+          outline: none;
+          caret-color: #a1a9c3;
+          font-size: 14px;
+          color: #132968;
+          &::placeholder {
+            text-transform: capitalize;
+            color: #a1a9c3;
+            opacity: 1;
+          }
+        }
+      }
+    }
+    &Result {
+      display: flex;
+    }
   }
 }

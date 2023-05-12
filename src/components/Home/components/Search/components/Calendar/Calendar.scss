@@ -1,0 +1,73 @@
+.Calendar {
+  display: flex;
+  align-items: center;
+  margin: 4px 8px;
+  width: 96%;
+  .departureDate {
+    flex: 1;
+    .departureDateContent {
+      display: flex;
+      position: relative;
+      font-weight: 400;
+      height: 48px;
+      border: 1px solid #f1f2f6;
+      font-size: 16px;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: border 0.15s;
+      color: #132968;
+      background-color: #f1f2f6;
+      box-shadow: none;
+      align-items: center;
+      justify-content: flex-start;
+      border-radius: 8px 0 0 8px;
+      .calendarSVG {
+        color: #a1a9c3;
+        padding: 0 10px;
+        display: flex;
+        svg {
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+  }
+  .arrivalDate {
+    flex: 1;
+    .arrivalDateContent {
+      display: flex;
+      position: relative;
+      font-weight: 400;
+      height: 48px;
+      border-radius: 8px;
+      border: 1px solid #f1f2f6;
+      font-size: 16px;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: border 0.15s;
+      color: #132968;
+      background-color: #f1f2f6;
+      box-shadow: none;
+      align-items: center;
+      border-radius: 0 8px 8px 0;
+      padding: 0 0 0 20px;
+      &::before {
+        position: absolute;
+        left: -1px;
+        top: 50%;
+        margin-top: -12px;
+        content: "";
+        height: 24px;
+        width: 1px;
+        background-color: #ccc;
+      }
+      span {
+        color: rgb(161, 169, 195);
+        max-width: calc(100% - 44px);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}

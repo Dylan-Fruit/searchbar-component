@@ -3,6 +3,7 @@ import Departure from "./components/Departure/Departure";
 import RoundTrip from "./components/RoundTrip/RoundTrip";
 import Passengers from "./components/Passengers/Passengers";
 import "./Search.scss";
+import Calendar from "./components/Calendar/Calendar";
 
 const Search = () => {
   return (
@@ -13,8 +14,10 @@ const Search = () => {
           <Passengers />
         </div>
         <div className="searchForm">
-          <form>
+          <form method="POST">
             <Departure />
+            <Calendar />
+            <button className="btn">Rechercher</button>
           </form>
         </div>
       </div>
