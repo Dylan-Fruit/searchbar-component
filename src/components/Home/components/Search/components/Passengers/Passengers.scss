@@ -3,13 +3,14 @@
   align-items: center;
   margin: 4px 8px;
   .passengerButton,
-  .reductionButton {
+  .discountButton {
     display: flex;
     align-items: center;
     margin-left: 16px;
+    transition: 0.15s ease-in-out;
   }
   .passengerSVG,
-  .reductionSVG {
+  .discountSVG {
     height: 24px;
     width: 24px;
     display: flex;
@@ -26,5 +27,336 @@
     line-height: 24px;
     color: #132968;
     font-weight: 500;
+  }
+  .passengers {
+    &Top {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      &Text {
+        padding: 16px;
+        p {
+          color: rgb(19, 41, 104);
+          letter-spacing: 0px;
+          margin: 0px;
+          font-weight: bold;
+          font-size: 18px;
+          line-height: 24px;
+        }
+      }
+      &SVG {
+        cursor: pointer;
+        padding: 16px;
+        svg {
+          height: 24px;
+          width: 24px;
+          path {
+            fill: rgb(113, 127, 164);
+          }
+        }
+      }
+    }
+    &Adult,
+    &Youths,
+    &Senior {
+      &::before {
+        content: "";
+        height: 1px;
+        background: rgb(228, 232, 235);
+        display: flex;
+      }
+      &Content {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 16px;
+        align-items: center;
+        &Text {
+          display: flex;
+          flex-direction: column;
+          .type {
+            line-height: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            color: rgb(19, 41, 104);
+          }
+          .years {
+            font-size: 14px;
+            color: rgb(113, 127, 164);
+            line-height: 20px;
+          }
+        }
+      }
+      .disabled {
+        display: none;
+      }
+      .displayed {
+        border-top: 1px solid rgb(220, 223, 233);
+        padding: 0 16px 0 32px;
+        .elementDisplayed {
+          padding: 16px 0px;
+          border-bottom: 1px solid rgb(220, 223, 233);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          &:last-child {
+            border-bottom: none;
+          }
+          span {
+            font-size: 16px;
+            color: rgb(66, 84, 134);
+          }
+          .select {
+            position: relative;
+            &SVG {
+              color: rgb(66, 84, 134);
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
+              line-height: 0;
+              pointer-events: none;
+              width: 18px;
+              height: 18px;
+              right: 12px;
+            }
+            select {
+              background-color: rgb(205, 226, 245);
+              border: 1px solid transparent;
+              color: rgb(66, 84, 134);
+              font-size: 16px;
+              width: 100%;
+              appearance: none;
+              outline: none;
+              height: 26px;
+              padding: 0px 30px 0px 16px;
+              border-radius: 16px;
+              transition: all 300ms ease 0s;
+              opacity: 1;
+              cursor: pointer;
+              &:hover,
+              &:focus,
+              &:active {
+                border-color: rgb(66, 84, 134);
+              }
+            }
+          }
+        }
+      }
+    }
+    &Menu {
+      position: fixed;
+      background-color: #fff;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      z-index: 999;
+      flex-direction: column;
+      .alertMessage {
+        padding: 0 14px;
+        &Content {
+          display: flex;
+          border-width: 1px;
+          border-style: solid;
+          color: rgb(182, 87, 0);
+          background: rgb(255, 247, 237);
+          border-color: rgb(247, 175, 72);
+          padding: 8px;
+          border-radius: 8px;
+          .alertSVG {
+            height: 20px;
+            width: 20px;
+            line-height: 1;
+            vertical-align: middle;
+            flex-shrink: 0;
+            align-self: flex-start;
+            margin-right: 8px;
+            svg {
+              circle {
+                fill: rgb(182, 87, 0);
+              }
+              path {
+                fill: rgb(255, 247, 237);
+              }
+            }
+          }
+          .alertText {
+            margin-top: 1px;
+            width: calc(100% - 24px);
+            span {
+              letter-spacing: 0px;
+              margin: 0px;
+              font-weight: 400;
+              font-size: 16px;
+              line-height: 20px;
+              color: rgb(182, 87, 0);
+            }
+          }
+        }
+      }
+    }
+    &Count {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 108px;
+      color: rgb(66, 84, 134);
+      font-size: 16px;
+      &SVG {
+        .btnSVG {
+          background: transparent;
+          margin: 0px;
+          padding: 0px;
+          width: 32px;
+          border: none;
+          color: rgb(94, 144, 204);
+          height: 32px;
+          outline: none;
+          cursor: pointer;
+        }
+        .btnDisabled {
+          background: transparent;
+          margin: 0;
+          padding: 0;
+          width: 32px;
+          height: 32px;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          color: rgb(220, 223, 233);
+        }
+      }
+    }
+    &Discount {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgb(220, 223, 233);
+      margin: 0px 0px 24px;
+      padding: 14px 10px 0px;
+      &Text {
+        display: flex;
+        color: rgb(66, 84, 134);
+        -webkit-box-align: center;
+        align-items: center;
+        .discountSVG {
+          width: 24px;
+          margin-right: 5px;
+        }
+        .infoSVG {
+          width: 20px;
+          margin: 5px 0px 0px 5px;
+          color: rgb(66, 84, 134);
+        }
+      }
+      &Toggle {
+        .react-toggle {
+          display: inline-block;
+          position: relative;
+          cursor: pointer;
+          background-color: transparent;
+          border: 0px;
+          padding: 0px;
+          user-select: none;
+          -webkit-tap-highlight-color: transparent;
+          &--checked {
+            .react-toggle-track {
+              background-color: rgb(36, 200, 154);
+            }
+            .react-toggle-thumb {
+              left: 18px;
+            }
+          }
+          &-track {
+            width: 40px;
+            height: 24px;
+            padding: 0px;
+            border-radius: 30px;
+            transition: all 0.2s ease 0s;
+            background-color: rgb(220, 223, 233);
+            &-check {
+              position: absolute;
+              width: 14px;
+              height: 10px;
+              top: 0px;
+              bottom: 0px;
+              margin-top: auto;
+              margin-bottom: auto;
+              line-height: 0;
+              left: 8px;
+              opacity: 0;
+              transition: opacity 0.25s ease 0s;
+            }
+            &-x {
+              position: absolute;
+              width: 10px;
+              height: 10px;
+              top: 0px;
+              bottom: 0px;
+              margin-top: auto;
+              margin-bottom: auto;
+              line-height: 0;
+              right: 10px;
+              opacity: 1;
+              transition: opacity 0.25s ease 0s;
+            }
+          }
+          &-thumb {
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgb(250, 250, 250);
+            box-sizing: border-box;
+            border: none;
+          }
+          &-screenreader-only {
+            border: 0px;
+            clip: rect(0px, 0px, 0px, 0px);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0px;
+            position: absolute;
+            width: 1px;
+          }
+        }
+      }
+    }
+    &Btn {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 12px 16px;
+      border-top: 1px solid rgb(220, 223, 233);
+      button {
+        width: 100%;
+        display: flex;
+        text-align: center;
+        line-height: 20px;
+        padding: 0 16px;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        -webkit-appearance: none;
+        appearance: none;
+        box-shadow: none;
+        position: relative;
+        overflow: hidden;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        -webkit-font-smoothing: antialiased;
+        transition: background-color 0.2s linear;
+        height: 48px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #fa6b6b;
+      }
+    }
   }
 }
