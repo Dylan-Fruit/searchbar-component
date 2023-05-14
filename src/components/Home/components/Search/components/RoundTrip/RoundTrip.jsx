@@ -1,13 +1,24 @@
 import React, { useState } from "react";
 import "./RoundTrip.scss";
 
-const RoundTrip = () => {
+const RoundTrip = ({ setReturnDate }) => {
   const [tripType, setTripType] = useState("Aller simple");
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleTripTypeChange = (event) => {
-    setTripType(event.target.innerText);
+    const selectedTripType = event.target.innerText;
+    setTripType(selectedTripType);
     setDropdownOpen(false);
+
+    if (selectedTripType === "Aller-retour") {
+      const departureDate = new Date();
+      const returnDate = new Date(
+        departureDate.getTime() + 7 * 24 * 60 * 60 * 1000
+      );
+      setReturnDate(returnDate);
+    } else {
+      setReturnDate(null);
+    }
   };
 
   const handleDropdownToggle = () => {

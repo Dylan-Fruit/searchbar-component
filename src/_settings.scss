@@ -1,7 +1,28 @@
+@font-face {
+  font-family: "GT Walsheim";
+  src: url("./assets/font/GTWalsheimPro-Bold.ttf");
+}
+@font-face {
+  font-family: "GT Walsheim";
+  src: url("./assets/font/GTWalsheimPro-Light.ttf");
+}
+@font-face {
+  font-family: "GT Walsheim";
+  src: url("./assets/font/GTWalsheimPro-Regular.ttf");
+}
+@font-face {
+  font-family: "GT Walsheim";
+  src: url("./assets/font/GTWalsheimPro-Thin.ttf");
+}
+@font-face {
+  font-family: "GT Walsheim";
+  src: url("./assets/font/GTWalsheimPro-Medium.ttf");
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: "Arimo", sans-serif;
+  font-family: "GT Walsheim", "Arimo", sans-serif;
 }

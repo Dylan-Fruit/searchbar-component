@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Calendar.scss";
 
-const Calendar = () => {
+const Calendar = ({ returnDate }) => {
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {
@@ -16,6 +16,9 @@ const Calendar = () => {
     weekday: "short",
   };
   const dateFormatter = new Intl.DateTimeFormat("fr-FR", options);
+  const returnDateFormatter = returnDate
+    ? dateFormatter.format(returnDate)
+    : "Ajouter retour";
 
   return (
     <div className="Calendar">
@@ -34,7 +37,9 @@ const Calendar = () => {
       </div>
       <div className="arrivalDate">
         <div className="arrivalDateContent">
-          <span>Ajouter retour</span>
+          <span className={returnDate ? "returnDate" : "addReturn"}>
+            {returnDateFormatter}
+          </span>
         </div>
       </div>
     </div>
