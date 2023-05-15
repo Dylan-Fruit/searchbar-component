@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import Toggle from "react-toggle";
 import Departure from "./components/Departure/Departure";
 import RoundTrip from "./components/RoundTrip/RoundTrip";
 import Passengers from "./components/Passengers/Passengers";
 import "./Search.scss";
-import Calendar from "./components/Calendar/Calendar";
+import CalendarComponent from "./components/Calendar/CalendarComponent";
 
 const Search = () => {
   const [returnDate, setReturnDate] = useState(null);
+  const [toggleChecked, setToggleChecked] = useState(true);
 
   return (
     <div className="Search">
@@ -18,9 +20,20 @@ const Search = () => {
         <div className="searchForm">
           <form method="POST">
             <Departure />
-            <Calendar returnDate={returnDate} />
+            <CalendarComponent
+              returnDate={returnDate}
+              setReturnDate={setReturnDate}
+            />
             <button className="btn">Rechercher</button>
           </form>
+        </div>
+        <div className="toggleBtn">
+          <Toggle
+            defaultChecked={toggleChecked}
+            icons={false}
+            onChange={(e) => setToggleChecked(e.target.checked)}
+          />
+          <span>Trouver un hébergement</span>
         </div>
       </div>
     </div>

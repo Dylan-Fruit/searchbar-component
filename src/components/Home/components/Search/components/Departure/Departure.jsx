@@ -17,6 +17,9 @@ const Departure = () => {
   );
   const [departureModal, setDepartureModal] = useState(false);
   const [arrivalModal, setArrivalModal] = useState(false);
+  const [selectedResult, setSelectedResult] = useState(null);
+  const [selectedResultArrival, setSelectedResultArrival] = useState(null);
+
   const apiLink = "https://api.comparatrip.eu/cities/";
 
   useEffect(() => {
@@ -76,6 +79,21 @@ const Departure = () => {
   function handleCloseModal() {
     setDepartureModal(false);
     setArrivalModal(false);
+    setSelectedResult(null); // Réinitialiser le résultat sélectionné pour le départ
+    setSelectedResultArrival(null); // Réinitialiser le résultat sélectionné pour le retour// Réinitialiser la recherche pour le retour
+  }
+
+  function handleSelectResult(result) {
+    setSelectedResult(result);
+    setSearchCities(result.local_name);
+    setDepartureCity(result.local_name);
+    setDepartureModal(false);
+  }
+
+  function handleSelectResultArrival(result) {
+    setSelectedResultArrival(result);
+    setSearchArrival(result.local_name); // Mettre à jour la valeur de l'input d'arrivée
+    setArrivalModal(false); // Fermer la modal
   }
 
   return (
@@ -92,7 +110,7 @@ const Departure = () => {
         <input
           type="text"
           placeholder="De: Ville, Gare Ou Aéroport"
-          value={searchCities}
+          value={selectedResult ? selectedResult.local_name : searchCities}
           autoComplete="off"
           autoCorrect="off"
           onChange={handleInputChange}
@@ -112,7 +130,11 @@ const Departure = () => {
         <input
           type="text"
           placeholder="Vers: Ville, Gare Ou Aéroport"
-          value={searchArrival}
+          value={
+            selectedResultArrival
+              ? selectedResultArrival.local_name
+              : searchArrival
+          }
           onFocus={handleArrivalFocus}
           onBlur={handleArrivalBlur}
           onChange={handleArrivalInput}
@@ -139,7 +161,9 @@ const Departure = () => {
               <input
                 type="text"
                 placeholder="Ville, Gare Ou Aéroport"
-                value={searchCities}
+                value={
+                  selectedResult ? selectedResult.local_name : searchCities
+                }
                 onChange={handleInputChange}
                 id="modalInput"
               />
@@ -149,7 +173,12 @@ const Departure = () => {
             {autoCompleteResultsDeparture.length > 0 && (
               <ul>
                 {autoCompleteResultsDeparture.map((result) => (
-                  <li key={result.local_name}>{result.local_name}</li>
+                  <li
+                    key={result.local_name}
+                    onClick={() => handleSelectResult(result)}
+                  >
+                    {result.local_name}
+                  </li>
                 ))}
               </ul>
             )}
@@ -175,7 +204,11 @@ const Departure = () => {
               <input
                 type="text"
                 placeholder="Ville, Gare Ou Aéroport"
-                value={searchArrival}
+                value={
+                  selectedResultArrival
+                    ? selectedResultArrival.local_name
+                    : searchArrival
+                }
                 onChange={handleArrivalInput}
                 id="modalInput"
               />
@@ -185,9 +218,29 @@ const Departure = () => {
             {autoCompleteResultsArrival.length > 0 && (
               <ul>
                 {autoCompleteResultsArrival.map((result) => (
-                  <li key={result.local_name}>{result.local_name}</li>
+                  <li
+                    key={result.local_name}
+                    onClick={() => handleSelectResultArrival(result)}
+                  >
+                    {result.local_name}
+                  </li>
                 ))}
               </ul>
+            )}
+            {popularCitiesFromDeparture.length > 0 && isArrivalFocused && (
+              <div>
+                <h2>Villes populaires au départ de {departureCity}</h2>
+                <ul>
+                  {popularCitiesFromDeparture.map((result) => (
+                    <li
+                      key={result.local_name}
+                      onClick={() => handleSelectResultArrival(result)}
+                    >
+                      {result.local_name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
         </div>

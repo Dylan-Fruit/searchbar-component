@@ -80,6 +80,7 @@
     height: 100%;
     background-color: #fff;
     display: flex;
+    flex-direction: column;
     z-index: 999;
     &Top {
       width: 100%;
@@ -127,6 +128,18 @@
     }
     &Result {
       display: flex;
+      margin-top: 30px;
+      padding: 0 20px;
+      ul {
+        li {
+          margin-bottom: 10px;
+          background-color: #f1f2f6;
+          padding: 10px;
+          border-radius: 8px;
+          color: #132968;
+          cursor: pointer;
+        }
+      }
     }
   }
 }
