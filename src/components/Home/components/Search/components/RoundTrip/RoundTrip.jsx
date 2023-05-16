@@ -6,7 +6,7 @@ const RoundTrip = ({ setReturnDate }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleTripTypeChange = (event) => {
-    const selectedTripType = event.target.innerText;
+    const selectedTripType = event.target.textContent;
     setTripType(selectedTripType);
     setDropdownOpen(false);
 

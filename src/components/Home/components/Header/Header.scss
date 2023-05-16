@@ -1,13 +1,116 @@
 .header {
-  nav {
+  display: flex;
+  justify-content: center;
+  .nav {
+    z-index: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: absolute;
     top: 0;
-    left: 0;
+    width: 82%;
+    padding: 10px 16px;
+    .leftSide {
+      display: flex;
+      align-items: center;
+      &Img {
+        img {
+          height: 28px;
+          width: 82px;
+          margin-right: 33px;
+        }
+      }
+      ul {
+        display: flex;
+        li {
+          color: inherit;
+          font-size: 14px;
+          line-height: 24px;
+          text-transform: capitalize;
+          text-decoration: none;
+          position: relative;
+          margin-right: 24px;
+          color: #fff;
+        }
+      }
+    }
+    .rightSide {
+      display: flex;
+      align-items: center;
+      .currency {
+        margin-left: 40px;
+        height: 24px;
+        cursor: pointer;
+        background: 0;
+        border: 0;
+        padding: 0;
+        display: flex;
+        align-content: center;
+        color: inherit;
+        font-size: 14px;
+        line-height: 24px;
+        color: #fff;
+        span {
+          margin-right: 8px;
+        }
+        &SVG {
+          display: flex;
+          align-self: center;
+          svg {
+            height: 18px;
+            width: 18px;
+            path {
+              fill: #fff;
+            }
+          }
+        }
+      }
+      .language {
+        display: flex;
+        margin-left: 40px;
+        align-items: center;
+        &IMG {
+          margin-right: 8px;
+          height: 16px;
+          width: 24px;
+        }
+        &SVG {
+          display: flex;
+          align-self: center;
+          svg {
+            height: 18px;
+            width: 18px;
+            path {
+              fill: #fff;
+            }
+          }
+        }
+      }
+      .accountGestion {
+        ul {
+          display: flex;
+          li {
+            color: #fff;
+            font-size: 14px;
+            margin-left: 40px;
+          }
+        }
+      }
+    }
+  }
+  nav {
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 0;
     width: 100%;
     padding: 10px 16px;
+    @media screen and (min-width: 1024px) {
+      width: 80%;
+      padding: 10px 0;
+    }
     img {
       height: 28px;
       width: 82px;

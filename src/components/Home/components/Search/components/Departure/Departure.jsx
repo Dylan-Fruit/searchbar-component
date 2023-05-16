@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import isMobile from "is-mobile";
 import "./Departure.scss";
 
 const Departure = () => {
@@ -12,6 +13,7 @@ const Departure = () => {
   const [departureCity, setDepartureCity] = useState("");
   const [popularCities, setPopularCities] = useState([]);
   const [isArrivalFocused, setIsArrivalFocused] = useState(false);
+  const [isDepartureFocused, setIsDepartureFocused] = useState(false);
   const [popularCitiesFromDeparture, setPopularCitiesFromDeparture] = useState(
     []
   );
@@ -19,6 +21,7 @@ const Departure = () => {
   const [arrivalModal, setArrivalModal] = useState(false);
   const [selectedResult, setSelectedResult] = useState(null);
   const [selectedResultArrival, setSelectedResultArrival] = useState(null);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
 
   const apiLink = "https://api.comparatrip.eu/cities/";
 
@@ -44,14 +47,7 @@ const Departure = () => {
     }
   }, [searchArrival]);
 
-  useEffect(() => {
-    fetch(`${apiLink}popular/5`)
-      .then((response) => response.json())
-      .then((data) => setPopularCities(data))
-      .catch((error) => console.log(error));
-  }, []);
-
-  function handleArrivalFocus() {
+  function handleArrivalFocus(e) {
     if (departureCity) {
       fetch(`${apiLink}popular/from/${departureCity}/5`)
         .then((response) => response.json())
@@ -61,26 +57,61 @@ const Departure = () => {
       setPopularCitiesFromDeparture([]);
     }
     setIsArrivalFocused(true);
+    if (isArrivalFocused && e.target.value > 0) {
+      setArrivalModal(true);
+    } else {
+      setArrivalModal(false);
+    }
   }
 
+  useEffect(() => {
+    setIsMobileDevice(isMobile());
+  }, []);
+
+  function handleDepartureFocused(e) {
+    if (popularCities) {
+      fetch(`${apiLink}popular/5`)
+        .then((response) => response.json())
+        .then((data) => setPopularCities(data))
+        .catch((error) => console.log(error));
+    } else {
+      setPopularCities([]);
+    }
+    setIsDepartureFocused(true);
+  }
+
+  // Fonction récupérant la valeur entrée dans les input de départ
   function handleInputChange(e) {
     setDepartureCity(e.target.value);
     setSearchCities(e.target.value);
+
+    if (!e.target.value) {
+      setDepartureModal(false);
+    } else {
+      setDepartureModal(true);
+      setSelectedResult(null);
+    }
   }
 
+  // Fonction récupérant la valeur entrée dans les input d'arrivée
   function handleArrivalInput(e) {
     setSearchArrival(e.target.value);
-  }
 
-  function handleArrivalBlur() {
-    setIsArrivalFocused(false);
+    if (!e.target.value) {
+      setArrivalModal(false);
+    } else {
+      setArrivalModal(true);
+      setSelectedResultArrival(null);
+      setPopularCitiesFromDeparture([]);
+    }
   }
 
   function handleCloseModal() {
     setDepartureModal(false);
     setArrivalModal(false);
     setSelectedResult(null); // Réinitialiser le résultat sélectionné pour le départ
-    setSelectedResultArrival(null); // Réinitialiser le résultat sélectionné pour le retour// Réinitialiser la recherche pour le retour
+    setSelectedResultArrival(null); // Réinitialiser le résultat sélectionné pour le retour
+    setDepartureCity("");
   }
 
   function handleSelectResult(result) {
@@ -94,6 +125,18 @@ const Departure = () => {
     setSelectedResultArrival(result);
     setSearchArrival(result.local_name); // Mettre à jour la valeur de l'input d'arrivée
     setArrivalModal(false); // Fermer la modal
+  }
+
+  function handleDepartureChange() {
+    if (searchCities && searchArrival) {
+      const temp = searchCities;
+      setSearchCities(searchArrival);
+      setSearchArrival(temp);
+
+      // Mettre à jour les valeurs affichées dans les inputs
+      setSelectedResultArrival({ local_name: searchCities });
+      setSelectedResult({ local_name: searchArrival });
+    }
   }
 
   return (
@@ -111,12 +154,22 @@ const Departure = () => {
           type="text"
           placeholder="De: Ville, Gare Ou Aéroport"
           value={selectedResult ? selectedResult.local_name : searchCities}
-          autoComplete="off"
-          autoCorrect="off"
+          onFocus={handleDepartureFocused}
           onChange={handleInputChange}
           id="departureCity"
-          onClick={() => setDepartureModal(true)}
+          onClick={isMobileDevice ? () => setDepartureModal(true) : null}
         />
+        <div className="overflowHide">
+          <div className="overflowHide2"></div>
+        </div>
+        <div className="departureChangeSVG" onClick={handleDepartureChange}>
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M6.632 5.763L3.757 8.961a.978.978 0 0 1-1.454 0 1.21 1.21 0 0 1 0-1.618l4.499-5.005a1 1 0 0 1 1.487 0l4.397 4.892a1.21 1.21 0 0 1-.073 1.691.978.978 0 0 1-1.38-.073l-2.58-2.869v11.017a1 1 0 0 1-1 1h-.021a1 1 0 0 1-1-1V5.763zm11.022 12.261l2.578-2.868a.978.978 0 0 1 1.454 0 1.21 1.21 0 0 1 0 1.617l-4.397 4.892a1 1 0 0 1-1.487 0l-4.499-5.005a1.21 1.21 0 0 1 0-1.618.978.978 0 0 1 1.454 0l2.875 3.198V7.007a1 1 0 0 1 1-1h.022a1 1 0 0 1 1 1v11.017z"
+              id="Swapper__a"
+            ></path>
+          </svg>
+        </div>
       </div>
       <div className="arrivalCity">
         <div className="arrivalSVG">
@@ -136,16 +189,19 @@ const Departure = () => {
               : searchArrival
           }
           onFocus={handleArrivalFocus}
-          onBlur={handleArrivalBlur}
+          onBlur={() => setArrivalModal(false)}
           onChange={handleArrivalInput}
           id="arrivalCity"
-          onClick={() => setArrivalModal(true)}
+          onClick={isMobileDevice ? () => setArrivalModal(true) : null}
         />
+        <div className="overflowHide">
+          <div className="overflowHide2"></div>
+        </div>
       </div>
       {departureModal && (
-        <div className="modal">
-          <div className="modalTop">
-            <div className="modalTopContent">
+        <div className="departureModal">
+          <div className="departureModalTop">
+            <div className="departureModalTopContent">
               <div className="modalSVG" onClick={() => handleCloseModal()}>
                 <svg
                   viewBox="0 0 24 24"
@@ -161,15 +217,13 @@ const Departure = () => {
               <input
                 type="text"
                 placeholder="Ville, Gare Ou Aéroport"
-                value={
-                  selectedResult ? selectedResult.local_name : searchCities
-                }
+                value={departureCity}
                 onChange={handleInputChange}
-                id="modalInput"
+                id="departureInput"
               />
             </div>
           </div>
-          <div className="modalResult">
+          <div className="departureModalResult">
             {autoCompleteResultsDeparture.length > 0 && (
               <ul>
                 {autoCompleteResultsDeparture.map((result) => (
@@ -182,13 +236,23 @@ const Departure = () => {
                 ))}
               </ul>
             )}
+            {popularCities.length > 0 && isDepartureFocused && (
+              <div className="Popular">
+                <h2>Villes populaires</h2>
+                <ul>
+                  {popularCities.map((city) => (
+                    <li key={city.local_name}>{city.local_name}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       )}
       {arrivalModal && (
-        <div className="modal">
-          <div className="modalTop">
-            <div className="modalTopContent">
+        <div className="arrivalModal">
+          <div className="arrivalModalTop">
+            <div className="arrivalModalTopContent">
               <div className="modalSVG" onClick={() => handleCloseModal()}>
                 <svg
                   viewBox="0 0 24 24"
@@ -204,17 +268,13 @@ const Departure = () => {
               <input
                 type="text"
                 placeholder="Ville, Gare Ou Aéroport"
-                value={
-                  selectedResultArrival
-                    ? selectedResultArrival.local_name
-                    : searchArrival
-                }
+                value={searchArrival}
                 onChange={handleArrivalInput}
-                id="modalInput"
+                id="arrivalInput"
               />
             </div>
           </div>
-          <div className="modalResult">
+          <div className="arrivalModalResult">
             {autoCompleteResultsArrival.length > 0 && (
               <ul>
                 {autoCompleteResultsArrival.map((result) => (
@@ -228,8 +288,8 @@ const Departure = () => {
               </ul>
             )}
             {popularCitiesFromDeparture.length > 0 && isArrivalFocused && (
-              <div>
-                <h2>Villes populaires au départ de {departureCity}</h2>
+              <div className="popularFromDeparture">
+                <span>Villes populaires au départ de {departureCity}</span>
                 <ul>
                   {popularCitiesFromDeparture.map((result) => (
                     <li
@@ -243,34 +303,6 @@ const Departure = () => {
               </div>
             )}
           </div>
-        </div>
-      )}
-
-      {autoCompleteResultsDeparture.length > 0 && (
-        <ul>
-          {autoCompleteResultsDeparture.map((result) => (
-            <li key={result.local_name}>{result.local_name}</li>
-          ))}
-        </ul>
-      )}
-      {popularCities.length > 0 && (
-        <div className="Popular">
-          <h2>Villes populaires</h2>
-          <ul>
-            {popularCities.map((city) => (
-              <li key={city.local_name}>{city.local_name}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {popularCitiesFromDeparture.length > 0 && isArrivalFocused && (
-        <div>
-          <h2>Villes populaires au départ de {departureCity}</h2>
-          <ul>
-            {popularCitiesFromDeparture.map((city) => (
-              <li key={city.local_name}>{city.local_name}</li>
-            ))}
-          </ul>
         </div>
       )}
     </div>

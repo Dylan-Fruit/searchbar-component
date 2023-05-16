@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import isMobile from "is-mobile";
+import bats from "../../../../../../assets/bats.png";
 import "./Passengers.scss";
 import Toggle from "react-toggle";
 
@@ -10,12 +12,19 @@ const Passengers = () => {
     seniors: 0,
     discounts: 0,
   });
-  const [isDiscountToggleChecked, setDiscountToggleChecked] = useState(true);
+  const [isDiscountToggleChecked, setDiscountToggleChecked] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+
+  useEffect(() => {
+    setIsMobileDevice(isMobile());
+  }, []);
 
   function updatePassengerCount(type, increment) {
     setPassengerCounts((passengerCounts) => {
       const newCount = passengerCounts[type] + increment;
-      if (newCount < 0) return passengerCounts;
+      if (newCount < 0 || totalPassengers + increment > 9) {
+        return passengerCounts;
+      }
       return { ...passengerCounts, [type]: newCount };
     });
   }
@@ -27,8 +36,12 @@ const Passengers = () => {
 
   const isAdultButtonDisabled = passengerCounts.adults === 0;
   const isYouthButtonDisabled = passengerCounts.youths === 0;
-  const isSeniorButtonDisavled = passengerCounts.seniors === 0;
-  //const isDiscountCheckDisabled = isDiscountToggleChecked;
+  const isSeniorButtonDisabled = passengerCounts.seniors === 0;
+  const isButtonPlusDisabled = totalPassengers === 9;
+
+  function handleOpenMenu() {
+    setIsMenuOpen(true);
+  }
 
   function handleCloseMenu() {
     setIsMenuOpen(false);
@@ -36,8 +49,11 @@ const Passengers = () => {
 
   return (
     <div className="Passengers">
-      <div className="passengerButton" onClick={() => setIsMenuOpen(true)}>
-        <div className="passengerSVG">
+      <div
+        className="passengerButton"
+        onClick={isMenuOpen ? handleCloseMenu : handleOpenMenu}
+      >
+        <div className={isMobileDevice ? "passengerSVG" : "hidden"}>
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <circle
               cx="12"
@@ -53,12 +69,30 @@ const Passengers = () => {
             ></path>
           </svg>
         </div>
-        <div className="numberOfPassengers">
-          <p>{totalPassengers}</p>
-        </div>
+        {isMobileDevice ? (
+          <div className="numberOfPassengers">
+            <p>{totalPassengers}</p>
+          </div>
+        ) : (
+          <div className="numberOfPassengers">
+            <p>{totalPassengers}</p>
+            {totalPassengers === passengerCounts.adults ? (
+              <div className="numberOfPassengersText">
+                <p>{totalPassengers > 1 ? "Adultes," : "Adulte,"}</p>
+              </div>
+            ) : (
+              <div className="numberOfPassengersText">
+                <p>{totalPassengers > 1 ? "Passagers," : ""}</p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
-      <div className="discountButton" onClick={() => setIsMenuOpen(true)}>
-        <div className="discountSVG">
+      <div
+        className="discountButton"
+        onClick={isMenuOpen ? handleCloseMenu : handleOpenMenu}
+      >
+        <div className={isMobileDevice ? "discountSVG" : "hidden"}>
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M15.375 15.375c2.025 0 3.825-.9 5.063-2.25H21v6.75C21 20.55 20.55 21 19.875 21H4.125C3.45 21 3 20.55 3 19.875v-6.75h7.313c1.237 1.35 3.037 2.25 5.062 2.25zm-6.75-6.75c0 .787.113 1.575.338 2.25H3v-2.25C3 7.95 3.45 7.5 4.125 7.5h4.613c-.113.338-.113.787-.113 1.125zm6.75 5.625c-3.037 0-5.625-2.475-5.625-5.625S12.225 3 15.375 3 21 5.475 21 8.625s-2.475 5.625-5.625 5.625zm1.913-8.662l-4.726 5.174.788.788 4.725-5.175-.787-.787zm.337 6.3a1.013 1.013 0 1 0 0-2.026 1.013 1.013 0 0 0 0 2.025zm-4.5-4.5a1.013 1.013 0 1 0 0-2.026 1.013 1.013 0 0 0 0 2.026z"
@@ -67,9 +101,27 @@ const Passengers = () => {
             ></path>
           </svg>
         </div>
-        <div className="numberOfDiscount">
-          <p>{passengerCounts.discounts}</p>
-        </div>
+        {isMobileDevice ? (
+          <div className="numberOfDiscount">
+            <p>{passengerCounts.discounts}</p>
+          </div>
+        ) : (
+          <div className="numberOfDiscount">
+            <p>Sans carte de réduction</p>
+          </div>
+        )}
+      </div>
+      <div
+        id="hiddenSVG"
+        className={isMenuOpen ? "chevron-up" : "chevron-down"}
+        onClick={isMenuOpen ? handleCloseMenu : handleOpenMenu}
+      >
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 14.121l6.364-6.364a1 1 0 0 1 1.414 1.415l-7.07 7.07a.997.997 0 0 1-1.415 0l-7.071-7.07a1 1 0 1 1 1.414-1.415L12 14.121z"
+            fill="currentColor"
+          ></path>
+        </svg>
       </div>
       {isMenuOpen && (
         <div className="passengersMenu">
@@ -98,7 +150,7 @@ const Passengers = () => {
                   <div className="passengersCountSVG">
                     <button
                       className={
-                        isAdultButtonDisabled ? "btnDisabled" : "btnSVG"
+                        isAdultButtonDisabled ? "btnDisabled" : "minusSVG"
                       }
                       onClick={() => updatePassengerCount("adults", -1)}
                       disabled={isAdultButtonDisabled}
@@ -119,7 +171,10 @@ const Passengers = () => {
                   </div>
                   <div className="passengersCountSVG">
                     <button
-                      className="btnSVG"
+                      className={
+                        isButtonPlusDisabled ? "btnDisabled" : "plusSVG"
+                      }
+                      disabled={isButtonPlusDisabled}
                       onClick={() => updatePassengerCount("adults", 1)}
                     >
                       <svg
@@ -146,7 +201,7 @@ const Passengers = () => {
                   <div className="passengersCountSVG">
                     <button
                       className={
-                        isYouthButtonDisabled ? "btnDisabled" : "btnSVG"
+                        isYouthButtonDisabled ? "btnDisabled" : "minusSVG"
                       }
                       onClick={() => updatePassengerCount("youths", -1)}
                       disabled={isYouthButtonDisabled}
@@ -167,7 +222,10 @@ const Passengers = () => {
                   </div>
                   <div className="passengersCountSVG">
                     <button
-                      className="btnSVG"
+                      className={
+                        isButtonPlusDisabled ? "btnDisabled" : "plusSVG"
+                      }
+                      disabled={isButtonPlusDisabled}
                       onClick={() => updatePassengerCount("youths", 1)}
                     >
                       <svg
@@ -299,10 +357,10 @@ const Passengers = () => {
                   <div className="passengersCountSVG">
                     <button
                       className={
-                        isSeniorButtonDisavled ? "btnDisabled" : "btnSVG"
+                        isSeniorButtonDisabled ? "btnDisabled" : "minusSVG"
                       }
                       onClick={() => updatePassengerCount("seniors", -1)}
-                      disabled={isSeniorButtonDisavled}
+                      disabled={isSeniorButtonDisabled}
                     >
                       <svg
                         viewBox="0 0 32 32"
@@ -320,7 +378,10 @@ const Passengers = () => {
                   </div>
                   <div className="passengersCountSVG">
                     <button
-                      className="btnSVG"
+                      className={
+                        isButtonPlusDisabled ? "btnDisabled" : "plusSVG"
+                      }
+                      disabled={isButtonPlusDisabled}
                       onClick={() => updatePassengerCount("seniors", 1)}
                     >
                       <svg
@@ -451,13 +512,13 @@ const Passengers = () => {
             </div>
             <div className="passengersDiscountToggle">
               <Toggle
-                defaultChecked={isDiscountToggleChecked}
+                defaultChecked={false}
                 icons={false}
                 onChange={(e) => setDiscountToggleChecked(e.target.checked)}
               />
             </div>
           </div>
-          <div className="alertMessage">
+          <div className={isDiscountToggleChecked ? "hidden" : "alertMessage"}>
             <div className="alertMessageContent">
               <div className="alertSVG">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -474,6 +535,9 @@ const Passengers = () => {
                   de réduction.
                 </span>
               </div>
+            </div>
+            <div className="alertImg">
+              <img src={bats} alt="batbat img" />
             </div>
           </div>
           <div className="passengersBtn">

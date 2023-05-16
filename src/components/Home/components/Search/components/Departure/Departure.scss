@@ -1,11 +1,22 @@
-@media (min-width: 1200px) {
-  .modal {
-    display: none;
-  }
-}
-
 .DepartureInputs {
   .departureCity {
+    .overflowHide {
+      position: absolute;
+      top: 0;
+      right: 35px;
+      display: flex;
+      height: 100%;
+      align-items: center;
+      .overflowHide2 {
+        width: 16px;
+        height: 24px;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0,
+          #f1f2f6 100%
+        );
+      }
+    }
     .departureSVG {
       position: absolute;
       top: 16px;
@@ -18,8 +29,45 @@
         }
       }
     }
+    .departureChangeSVG {
+      cursor: pointer;
+      position: absolute;
+      top: 18px;
+      right: 12px;
+      @media screen and (min-width: 1024px) {
+        transform: rotate(90deg);
+        top: 16px;
+        right: 17px;
+        background-color: #f1f2f6;
+      }
+      svg {
+        width: 20px;
+        height: 20px;
+        transform-origin: center center;
+        path {
+          fill: rgb(94, 144, 204);
+        }
+      }
+    }
   }
   .arrivalCity {
+    .overflowHide {
+      position: absolute;
+      top: 0;
+      right: 18px;
+      display: flex;
+      height: 100%;
+      align-items: center;
+      .overflowHide2 {
+        width: 16px;
+        height: 24px;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0,
+          #f1f2f6 100%
+        );
+      }
+    }
     .arrivalSVG {
       position: absolute;
       top: 16px;
@@ -67,12 +115,25 @@
         border: 1px solid #a1a9c3;
         outline: 0;
       }
+      @media screen and (min-width: 1024px) {
+        width: 260px;
+        &:focus {
+          outline: none;
+          border: 1px solid #a1a9c3;
+          outline: 0;
+        }
+      }
     }
   }
   .Popular {
     display: none;
   }
-  .modal {
+  @media screen and (min-width: 1024px) {
+    display: flex;
+    position: relative;
+  }
+
+  .departureModal {
     position: fixed;
     top: 0;
     left: 0;
@@ -82,6 +143,17 @@
     display: flex;
     flex-direction: column;
     z-index: 999;
+    @media screen and (min-width: 1024px) {
+      position: absolute;
+      height: inherit;
+      top: 55px;
+      left: 9px;
+      width: 65%;
+      box-shadow: 0 4px 8px rgba(19, 41, 104, 0.1);
+      overflow: hidden;
+      overflow-y: scroll;
+      border-radius: 8px;
+    }
     &Top {
       width: 100%;
       height: 96px;
@@ -95,6 +167,9 @@
       flex-direction: column;
       align-items: center;
       box-shadow: 0 4px 8px 0 rgba(51, 51, 51, 0.1);
+      @media screen and (min-width: 1024px) {
+        display: none;
+      }
       &Content {
         display: flex;
         width: 100%;
@@ -130,6 +205,99 @@
       display: flex;
       margin-top: 30px;
       padding: 0 20px;
+      ul {
+        li {
+          margin-bottom: 10px;
+          background-color: #f1f2f6;
+          padding: 10px;
+          border-radius: 8px;
+          color: #132968;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .arrivalModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+    @media screen and (min-width: 1024px) {
+      position: absolute;
+      height: inherit;
+      top: 55px;
+      left: 51%;
+      width: 65%;
+      box-shadow: 0 4px 8px rgba(19, 41, 104, 0.1);
+      overflow: hidden;
+      overflow-y: scroll;
+      border-radius: 8px;
+    }
+    &Top {
+      width: 100%;
+      height: 96px;
+      box-sizing: border-box;
+      margin: 0;
+      background-color: #fff;
+      color: #666;
+      text-decoration: none;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 8px 0 rgba(51, 51, 51, 0.1);
+      @media screen and (min-width: 1024px) {
+        display: none;
+      }
+      &Content {
+        display: flex;
+        width: 100%;
+        height: 48px;
+        .modalSVG {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          svg {
+            width: 56px;
+            path {
+              fill: #717fa4;
+            }
+          }
+        }
+        input {
+          width: 100%;
+          border: none;
+          outline: none;
+          caret-color: #a1a9c3;
+          font-size: 14px;
+          color: #132968;
+          &::placeholder {
+            text-transform: capitalize;
+            color: #a1a9c3;
+            opacity: 1;
+          }
+        }
+      }
+    }
+    &Result {
+      display: flex;
+      flex-direction: column-reverse;
+      margin-top: 30px;
+      padding: 0 20px;
+      .popularFromDeparture {
+        font-size: 16px;
+        color: #132968;
+        span {
+          padding-bottom: 10px;
+        }
+      }
       ul {
         li {
           margin-bottom: 10px;

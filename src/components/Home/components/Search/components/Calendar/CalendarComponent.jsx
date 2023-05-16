@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Calendar from "react-calendar";
+import isMobile from "is-mobile";
+import MonthView, { Calendar } from "react-calendar";
 import "./CalendarComponent.scss";
 
 const CalendarComponent = ({ returnDate, setReturnDate }) => {
@@ -7,6 +8,9 @@ const CalendarComponent = ({ returnDate, setReturnDate }) => {
   const [arrivalDate, setArrivalDate] = useState(null);
   const [showDepartureCalendar, setShowDepartureCalendar] = useState(false);
   const [showReturnCalendar, setShowReturnCalendar] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [isCurrentMonth, setIsCurrentMonth] = useState(true);
 
   useEffect(() => {
     const tomorrow = new Date();
@@ -19,6 +23,12 @@ const CalendarComponent = ({ returnDate, setReturnDate }) => {
       setReturnDate(arrivalDate);
     }
   }, [arrivalDate, setReturnDate]);
+
+  useEffect(() => {
+    if (isMobile) {
+      setIsMobileDevice(isMobile());
+    }
+  }, []);
 
   const options = {
     month: "short",
@@ -46,14 +56,84 @@ const CalendarComponent = ({ returnDate, setReturnDate }) => {
   }
 
   function handleReturnDateSelect(selectedDate) {
-    setArrivalDate(selectedDate);
-    setReturnDate(selectedDate);
-    setShowReturnCalendar(false);
+    if (selectedDate >= date) {
+      setArrivalDate(selectedDate);
+      setReturnDate(selectedDate);
+      setShowReturnCalendar(false);
+    }
   }
 
   function handleCloseMenu() {
     setShowDepartureCalendar(false);
     setShowReturnCalendar(false);
+  }
+  function handlePrevMonthClick() {
+    const prevMonth = getPrevMonth(currentMonth);
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    prevMonth.setHours(0, 0, 0, 0);
+
+    if (prevMonth >= now) {
+      setCurrentMonth(prevMonth);
+      setIsCurrentMonth(
+        prevMonth.getMonth() === now.getMonth() &&
+          prevMonth.getFullYear() === now.getFullYear()
+      );
+    }
+  }
+  function handleNextMonthClick() {
+    setCurrentMonth(getNextMonth(currentMonth));
+    setIsCurrentMonth(false);
+  }
+
+  function getNextMonth(date) {
+    const nextMonth = new Date(date.getTime());
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    console.log("Next month: ", nextMonth);
+    return nextMonth;
+  }
+
+  function getPrevMonth(date) {
+    const prevMonth = new Date(date.getTime());
+    prevMonth.setMonth(prevMonth.getMonth() - 1);
+    console.log("Previous month: ", prevMonth);
+    return prevMonth;
+  }
+
+  const year = new Date().getFullYear();
+  const months = [];
+  for (
+    let monthIndex = new Date().getMonth();
+    monthIndex < 16;
+    monthIndex += 1
+  ) {
+    months.push(
+      <MonthView
+        onChange={handleDepartureDateSelect}
+        value={date}
+        onClickDay={handleDepartureDateSelect}
+        minDate={new Date()}
+        activeStartDate={new Date(year, monthIndex)}
+        defaultView="month"
+      />
+    );
+  }
+  const arrivalMonth = [];
+  for (
+    let arrivalIndex = new Date().getMonth();
+    arrivalIndex < new Date().getMonth() + 16;
+    arrivalIndex += 1
+  ) {
+    arrivalMonth.push(
+      <MonthView
+        onChange={handleReturnDateSelect}
+        value={arrivalDate}
+        onClickDay={handleReturnDateSelect}
+        minDate={date}
+        activeStartDate={new Date(year, arrivalIndex)}
+        defaultView="month"
+      />
+    );
   }
 
   return (
@@ -113,14 +193,58 @@ const CalendarComponent = ({ returnDate, setReturnDate }) => {
               </ul>
             </div>
           </div>
-          <div className="calendarModalDays">
-            <Calendar
-              onChange={handleDepartureDateSelect}
-              value={date}
-              onClickDay={handleDepartureDateSelect}
-              minDate={new Date()}
-            />
-          </div>
+          {isMobileDevice ? (
+            <div className="calendarModalDays">{months}</div>
+          ) : (
+            <div className="calendarModalDays">
+              <div
+                className={isCurrentMonth ? "hidden" : "calendarModalDaysSVG"}
+                onClick={handlePrevMonthClick}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                >
+                  <path
+                    d="M9.634 12l7.043 7.043A1.115 1.115 0 1 1 15.1 20.62l-7.777-7.778A1.112 1.112 0 0 1 6.998 12c-.015-.303.093-.61.325-.842L15.1 3.38a1.115 1.115 0 0 1 1.577 1.577L9.634 12z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+              <Calendar
+                onChange={handleDepartureDateSelect}
+                value={date}
+                minDate={new Date()}
+                onClickDay={handleDepartureDateSelect}
+                activeStartDate={currentMonth}
+                showNeighboringMonth={false}
+              />
+              <Calendar
+                onChange={handleDepartureDateSelect}
+                value={date}
+                minDate={new Date()}
+                onClickDay={handleDepartureDateSelect}
+                activeStartDate={getNextMonth(currentMonth)}
+                showNeighboringMonth={false}
+              />
+              <div
+                className={"calendarModalDaysSVG2"}
+                onClick={handleNextMonthClick}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                >
+                  <path
+                    d="M9.634 12l7.043 7.043A1.115 1.115 0 1 1 15.1 20.62l-7.777-7.778A1.112 1.112 0 0 1 6.998 12c-.015-.303.093-.61.325-.842L15.1 3.38a1.115 1.115 0 0 1 1.577 1.577L9.634 12z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          )}
         </div>
       )}
       {showReturnCalendar && (
@@ -147,15 +271,62 @@ const CalendarComponent = ({ returnDate, setReturnDate }) => {
               </div>
             </div>
           </div>
-          <div className="calendarModalDays">
-            <Calendar
-              onChange={handleReturnDateSelect}
-              value={arrivalDate}
-              onClickDay={handleReturnDateSelect}
-              minDate={date}
-              selectRange={true}
-            />
-          </div>
+          {isMobileDevice ? (
+            <div className="calendarModalDays">{arrivalMonth}</div>
+          ) : (
+            <div className="calendarModalDays">
+              <div
+                className={
+                  isCurrentMonth && currentMonth <= date
+                    ? "hidden"
+                    : "calendarModalDaysSVG"
+                }
+                onClick={handlePrevMonthClick}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                >
+                  <path
+                    d="M9.634 12l7.043 7.043A1.115 1.115 0 1 1 15.1 20.62l-7.777-7.778A1.112 1.112 0 0 1 6.998 12c-.015-.303.093-.61.325-.842L15.1 3.38a1.115 1.115 0 0 1 1.577 1.577L9.634 12z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+              <Calendar
+                onChange={handleReturnDateSelect}
+                value={arrivalDate}
+                onClickDay={handleReturnDateSelect}
+                minDate={date}
+                activeStartDate={currentMonth}
+                showNeighboringMonth={false}
+              />
+              <Calendar
+                onChange={handleReturnDateSelect}
+                value={arrivalDate}
+                onClickDay={handleReturnDateSelect}
+                minDate={date}
+                activeStartDate={getNextMonth(currentMonth)}
+                showNeighboringMonth={false}
+              />
+              <div
+                className={"calendarModalDaysSVG2"}
+                onClick={handleNextMonthClick}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                >
+                  <path
+                    d="M9.634 12l7.043 7.043A1.115 1.115 0 1 1 15.1 20.62l-7.777-7.778A1.112 1.112 0 0 1 6.998 12c-.015-.303.093-.61.325-.842L15.1 3.38a1.115 1.115 0 0 1 1.577 1.577L9.634 12z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

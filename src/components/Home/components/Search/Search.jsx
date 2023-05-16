@@ -18,7 +18,7 @@ const Search = () => {
           <Passengers />
         </div>
         <div className="searchForm">
-          <form method="POST">
+          <form>
             <Departure />
             <CalendarComponent
               returnDate={returnDate}

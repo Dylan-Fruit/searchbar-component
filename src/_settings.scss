@@ -26,4 +26,7 @@
   font-weight: normal;
   list-style: none;
   font-family: "GT Walsheim", "Arimo", sans-serif;
+  abbr[title] {
+    text-decoration: none;
+  }
 }
